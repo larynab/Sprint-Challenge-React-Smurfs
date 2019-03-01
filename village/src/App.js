@@ -5,6 +5,7 @@ import SmurfForm from './components/SmurfForm';
 import Smurfs from './components/Smurfs';
 import axios from 'axios';
 import {Route, NavLink} from 'react-router-dom';
+import Smurf from './components/Smurf';
 
 class App extends Component {
   constructor(props) {
@@ -23,9 +24,16 @@ componentDidMount() {
 addSmurf = (e, smurf) => {
   e.preventDefault();
   axios.post('http://localhost:3333/smurfs', smurf)
-  .then(res => {console.log(res); this.props.history.push('/smurf-form');
+  .then(res => {console.log(res); this.props.history.push('/');
   })
   .catch(err => {console.log(err); });
+};
+
+exileSmurf = (e, id) => {
+  e.preventDefault();
+  axios.delete(`http://localhost:3333/smurfs/${id}`)
+  .then(res => {this.setState({smurfs: res.data}); this.props.history.push('/'); })
+  .catch(err => {console.log(err); })
 };
 
   render() {
@@ -37,6 +45,7 @@ addSmurf = (e, smurf) => {
         </nav>
         <Route path="/smurf-form" render={props => <SmurfForm {...props} addSmurf={this.addSmurf} />} />
         <Route exact path="/" exact render={props => <Smurfs {...props} smurfs={this.state.smurfs} />} />
+        <Route path="/smurf-list/:id" render={props => (<Smurf {...props} exileSmurf={this.exileSmurf} smurfs={this.state.smurfs}/> )} />
       </div>
     );
   }
