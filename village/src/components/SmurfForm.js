@@ -12,10 +12,7 @@ class SmurfForm extends Component {
   handleInputChange = e => {
     e.persist();
     this.setState(prevState => ({ 
-      smurf: {
-        ...prevState.smurf,
-        [e.target.name]: e.target.value 
-      }
+      smurf: {...prevState.smurf, [e.target.name]: e.target.value }
     }));
   }
 
